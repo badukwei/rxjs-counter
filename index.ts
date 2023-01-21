@@ -39,7 +39,18 @@ fromEvent(startButton, 'click').subscribe(() => {
   counter$.subscribe(data => {
     evenCounterLabel.innerHTML = `even count: ${data}`;
   });
-})
+
+  // status control
+  counter$.subscribe({
+    next: () => {},
+    error: message => {
+      statusLabel.innerHTML = `status: error, error message ${message}`;
+    },
+    complete: () => {
+      statusLabel.innerHTML = 'status: complete';
+    }
+  })
+});
 
 // counting event
 fromEvent(countButton, 'click').subscribe(() => {
@@ -51,3 +62,8 @@ fromEvent(errorButton, 'click').subscribe(() => {
   const reason = prompt('error message');
   counter$.error(reason || 'error');
 });
+
+// complete event
+fromEvent(completeButton, 'click').subscribe(() => {
+  counter$.complete();
+})
